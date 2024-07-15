@@ -25,6 +25,8 @@ app.use(cookieParser());
 console.log('CORS_ORIGIN:', process.env.CORS_ORIGIN); // Log to verify the value
 
 // routes import
+import adminRouter from "./routes/admin.routes.js";
 
+app.use("/api/v1/admin", adminRouter);
 
 export { app };
