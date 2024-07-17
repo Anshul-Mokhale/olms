@@ -17,7 +17,7 @@ const bookSchema = new Schema(
         },
         status: {
             type: String,
-            enum: ["issued", "returned", "available", "not-available"],
+            enum: ["issued", "available", "not-available"],
             required: true,
         }
     }

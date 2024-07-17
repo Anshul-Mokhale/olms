@@ -13,6 +13,11 @@ const transactionSchema = new Schema(
             ref: "Book",
             required: true,
         },
+        status: {
+            type: String,
+            required: true,
+            enum: ["issued", "returned"],
+        },
         dueDate: {
             type: Date,
             required: true,

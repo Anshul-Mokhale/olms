@@ -7,10 +7,12 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 
+// Log to verify the value of CORS_ORIGIN
+console.log('CORS_ORIGIN:', process.env.CORS_ORIGIN);
+
 const corsOptions = {
-    origin: process.env.CORS_ORIGIN || "http://cook-up.netlify.app",
-    // testing on localhost turn secure connection to false else make it true
-    credentials: false
+    origin: process.env.CORS_ORIGIN || "http://localhost:5173", // Removed trailing slash
+    credentials: false // Set to true if you need to send cookies or HTTP authentication information
 };
 
 app.use(cors(corsOptions));
@@ -22,11 +24,11 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
-console.log('CORS_ORIGIN:', process.env.CORS_ORIGIN); // Log to verify the value
-
 // routes import
 import adminRouter from "./routes/admin.routes.js";
+import userRouter from "./routes/user.routes.js";
 
 app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/user", userRouter);
 
 export { app };
