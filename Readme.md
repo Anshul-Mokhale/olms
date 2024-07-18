@@ -83,7 +83,7 @@ The frontend server should now be running on http://localhost:5173.
 ## API Endpoints
 
 
-## Frontend Env Data
+## Backend Env Data
 
 PORT=8000
 MONGODB_URI=mongodb+srv://anshumokhale:anshul%40123@cluster0.bkpmtvh.mongodb.net/olms?retryWrites=true&w=majority&appName=Cluster0
