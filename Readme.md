@@ -94,6 +94,9 @@ The frontend server should now be running on http://localhost:5173.
 /api/v1/admin/fetch-all-books
 /api/v1/admin/fetch-user-transaction
 
+/api/v1/user/login
+/api/v1/user/get-transaction
+
 ## Backend Env Data
 
 PORT=8000
