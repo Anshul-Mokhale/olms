@@ -81,7 +81,18 @@ npm start
 The frontend server should now be running on http://localhost:5173.
 
 ## API Endpoints
-
+/api/v1/admin/login
+/api/v1/admin/register-user
+/api/v1/admin/delete-user
+/api/v1/admin/add-book
+/api/v1/admin/remove-book
+/api/v1/admin/search-book
+/api/v1/admin/issue-book
+/api/v1/admin/return-book
+/api/v1/admin/fetch-all-users
+/api/v1/admin/fetch-data
+/api/v1/admin/fetch-all-books
+/api/v1/admin/fetch-user-transaction
 
 ## Backend Env Data
 
