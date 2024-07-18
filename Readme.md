@@ -60,7 +60,7 @@ Start the backend server:
 bash
 Copy code
 npm start
-The backend server should now be running on http://localhost:5000.
+The backend server should now be running on http://localhost:8000.
 
 Frontend Setup
 Navigate to the frontend directory:
@@ -78,24 +78,12 @@ Start the frontend server:
 bash
 Copy code
 npm start
-The frontend server should now be running on http://localhost:3000.
+The frontend server should now be running on http://localhost:5173.
 
-API Endpoints
-Books
-GET /api/books - Get all books
-POST /api/books - Add a new book (Admin only)
-DELETE /api/books/:id - Delete a book (Admin only)
-Users
-GET /api/users - Get all users
-POST /api/users - Add a new user
-GET /api/users/:id - Get a single user
-Transactions
-POST /api/transactions - Create a new transaction (Admin only)
-GET /api/transactions - Get all transactions (Admin only)
-GET /api/transactions/:userId - Get transactions for a specific user
-Project Structure
-plaintext
-Copy code
+## API Endpoints
+
+##Project Structure
+
 olms/
 ├── backend/
 │   ├── controllers/
@@ -109,7 +97,9 @@ olms/
     ├── src/
     ├── .env
     └── package.json
-Deployment on AWS
+
+
+##Deployment on AWS
 Step 1: Set Up AWS Services
 Create an AWS Account: Sign up for an AWS account if you don't have one.
 Launch EC2 Instances:
