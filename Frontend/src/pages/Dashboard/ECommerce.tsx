@@ -3,7 +3,7 @@ import CardDataStats from '../../components/CardDataStats';
 import { useBook } from '../../context/BookContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faBook, faBookBookmark, faRectangleList } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 const ECommerce: React.FC = () => {
 
 
@@ -127,24 +127,27 @@ const ECommerce: React.FC = () => {
             Result
           </h4>
           <div className="flex flex-col">
-            <div className="grid grid-cols-4 rounded-sm bg-gray-2 dark:bg-meta-4">
+            <div className="grid grid-cols-5 rounded-sm bg-gray-2 dark:bg-meta-4">
               <div className="p-2.5 xl:p-5">
                 <h5 className="text-sm font-medium xsm:text-base">Image</h5>
               </div>
-              <div className="p-2.5 text-center xl:p-5">
+              <div className="p-2.5 text-start xl:p-5">
                 <h5 className="text-sm font-medium xsm:text-base">Name</h5>
               </div>
-              <div className="p-2.5 text-center xl:p-5">
+              <div className="p-2.5 text-start xl:p-5">
                 <h5 className="text-sm font-medium xsm:text-base">Author</h5>
               </div>
               <div className="p-2.5 text-center xl:p-5">
                 <h5 className="text-sm font-medium xsm:text-base">Status</h5>
               </div>
+              <div className="p-2.5 text-center xl:p-5">
+                <h5 className="text-sm font-medium xsm:text-base">Action</h5>
+              </div>
             </div>
 
             {brandData.map((brand, key) => (
               <div
-                className={`grid grid-cols-4  ${key ===
+                className={`grid grid-cols-5  ${key ===
                   brandData.length - 1 ? '' : 'border-b border-stroke dark:border-strokedark'
                   }`}
                 key={key}
@@ -159,16 +162,28 @@ const ECommerce: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-center p-2.5 xl:p-5">
+                <div className="flex items-start text-start justify-center p-2.5 xl:p-5">
                   <p className="text-black dark:text-white">{brand.name}</p>
                 </div>
-                <div className="flex items-center justify-center p-2.5 xl:p-5">
+                <div className="flex items-start text-start justify-center p-2.5 xl:p-5">
                   <p className="text-black dark:text-white">{brand.author}</p>
                 </div>
 
                 <div className="flex items-center justify-center p-2.5 xl:p-5">
                   <p className="text-meta-3">{brand.status}</p>
                 </div>
+
+                <div className="flex items-center justify-center gap-4 p-2.5 xl:p-5">
+                  {brand.status === 'available' ? (
+                    <Link to={`/issue-book/${brand._id}`}>Issue</Link>
+                  ) : brand.status === 'issued' ? (
+                    <Link to={`/return-book/${brand._id}`}>Return</Link>
+                  ) : (
+                    <span className="text-gray-500 cursor-not-allowed">Not available</span>
+                  )}
+
+                </div>
+
               </div>
             ))}
           </div>

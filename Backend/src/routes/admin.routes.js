@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { registerAdmin, loginAdmin, createUser, addBooks, removeBooks, issueBook, returnBook, deleteUser, getAnalysis, getAllUsers, getAllBooks, getAllTransaction, searchBook, fetchUserTransactions } from '../controllers/admin.controllers.js';
+import { registerAdmin, loginAdmin, createUser, addBooks, removeBooks, issueBook, returnBook, deleteUser, getAnalysis, getAllUsers, getAllBooks, getAllTransaction, searchBook, fetchUserTransactions, fetchUserNameAndBookName, getBookById, getTransactionByBook } from '../controllers/admin.controllers.js';
 import { verifyJWT } from '../middlewares/auth.middlewares.js';
 import { upload } from '../middlewares/multer.middlewares.js';
 const router = Router();
@@ -70,6 +70,21 @@ router.route('/fetch-all-transaction').get(
 router.route('/fetch-user-transaction').post(
     verifyJWT,
     fetchUserTransactions
+)
+
+router.route('/fetch-username-bookname').post(
+    verifyJWT,
+    fetchUserNameAndBookName
+)
+
+router.route('/get-book').post(
+    verifyJWT,
+    getBookById
+)
+
+router.route('/get-transaction-book').post(
+    verifyJWT,
+    getTransactionByBook
 )
 
 export default router;

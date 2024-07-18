@@ -5,12 +5,17 @@ import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
 import ECommerce from './pages/Dashboard/ECommerce';
-import Profile from './pages/Profile';
 import DefaultLayout from './layout/DefaultLayout';
 import Stroage from './pages/Stroage';
 import AddBook from './pages/AddBook';
 import Users from './pages/Users';
 import Transactions from './pages/Transactions';
+import RegisterUser from './pages/RegisterUser';
+import Issue from './pages/Issue';
+import Return from './pages/Return';
+import User from './pages/User';
+import UserSigin from './pages/Authentication/UserSigin';
+import UserProfile from './pages/UserProfile';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -29,6 +34,9 @@ function App() {
   ) : (
     <Routes>
       <Route path='/signin' element={<SignIn />} />
+      <Route path='/user/signin' element={<UserSigin />} />
+      <Route path='/user/dashboard' element={<User />} />
+      <Route path='/user/profile' element={<UserProfile />} />
       <Route
         path="/*"
         element={
@@ -43,15 +51,7 @@ function App() {
                   </>
                 }
               />
-              <Route
-                path="profile"
-                element={
-                  <>
-                    <PageTitle title="Profile | OLMS - Online Library Management System" />
-                    <Profile />
-                  </>
-                }
-              />
+
               <Route
                 path="storage"
                 element={
@@ -61,7 +61,6 @@ function App() {
                   </>
                 }
               />
-
               <Route
                 path="add-books"
                 element={
@@ -71,7 +70,6 @@ function App() {
                   </>
                 }
               />
-
               <Route
                 path="users"
                 element={
@@ -81,7 +79,33 @@ function App() {
                   </>
                 }
               />
-
+              <Route
+                path="create-user"
+                element={
+                  <>
+                    <PageTitle title="Register User | OLMS - Online Library Management System" />
+                    <RegisterUser />
+                  </>
+                }
+              />
+              <Route
+                path="issue-book/:id"
+                element={
+                  <>
+                    <PageTitle title="Issue Book | OLMS - Online Library Management System" />
+                    <Issue />
+                  </>
+                }
+              />
+              <Route
+                path="return-book/:id"
+                element={
+                  <>
+                    <PageTitle title="Return Book | OLMS - Online Library Management System" />
+                    <Return />
+                  </>
+                }
+              />
               <Route
                 path="transactions"
                 element={
@@ -91,7 +115,6 @@ function App() {
                   </>
                 }
               />
-
             </Routes>
           </DefaultLayout>
         }

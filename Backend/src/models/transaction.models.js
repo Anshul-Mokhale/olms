@@ -22,6 +22,13 @@ const transactionSchema = new Schema(
             type: Date,
             required: true,
         },
+        issueDate: {
+            type: Date,
+            required: true,
+        },
+        returnDate: {
+            type: Date
+        }
     },
     { timestamps: true }
 );

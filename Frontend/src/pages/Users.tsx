@@ -9,14 +9,14 @@ function Users() {
     const [searchTerm, setSearchTerm] = useState('');
     const [showmessage, setShowmessage] = useState(false);
 
-    const { getAllUsers } = useUser();
+    const { getAllUsers, deleteUser } = useUser();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const data = await getAllUsers();
                 setAllusers(data.data);
-                console.log(data);
+                // console.log(data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -25,13 +25,13 @@ function Users() {
         fetchData();
     }, [getAllUsers]);
 
-    // const handleDelete = async (bookId) => {
-    //     const deleteResult = await deleteBook(bookId);
+    const handleDelete = async (userId) => {
+        const deleteResult = await deleteUser(userId);
 
-    //     if (deleteResult.status === 'success') {
-    //         setAllbooks((prevBooks) => prevBooks.filter(book => book._id !== bookId));
-    //     }
-    // }
+        if (deleteResult.status === 'success') {
+            setAllusers((prevUsers) => prevUsers.filter(user => user._id !== userId));
+        }
+    }
 
 
 
@@ -64,10 +64,10 @@ function Users() {
 
                     <nav>
                         <Link
-                            to="/add-books"
+                            to="/create-user"
                             className="inline-flex items-center justify-center bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
-                            Add Books
+                            Create User
                         </Link>
                     </nav>
                 </div>
@@ -182,7 +182,7 @@ function Users() {
 
                                         <button
                                             className="hover:text-danger"
-                                            onClick={() => handleDelete(book._id)}
+                                            onClick={() => handleDelete(user._id)}
                                         >
                                             <svg
                                                 className="fill-current"

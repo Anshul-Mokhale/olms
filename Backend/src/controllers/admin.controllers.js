@@ -237,46 +237,47 @@ const searchBook = asyncHandler(async (req, res) => {
 const issueBook = asyncHandler(async (req, res) => {
     const { bookId, userId, status, dueDate } = req.body;
 
-    if (
-        [bookId, userId, status, dueDate].some((field) => field?.trim() === "")
-    ) {
+    if ([bookId, userId, status, dueDate].some((field) => field?.trim() === "")) {
         throw new ApiError(400, "All fields are required");
     }
 
-    // check availability status
+    // Check if the book exists and its availability status
     const bookDetail = await Book.findById(bookId);
 
     if (!bookDetail) {
         throw new ApiError(404, "Book not found");
     }
 
-    if (bookDetail.status == 'available') {
-        const history = await Transaction.create({
-            userDetail: userId,
-            bookDetail: bookId,
-            status: "issued",
-            dueDate
-        })
-
-        const histrodyCheck = await Transaction.findById(history._id);
-
-        if (!histrodyCheck) {
-            throw new ApiError(400, "the transaction is not created");
-        } else {
-            bookDetail.status = status;
-            await bookDetail.save();
-        }
-    } else {
+    if (bookDetail.status !== 'available') {
         throw new ApiError(400, "Book is not available for issuing");
     }
+
+    // Create the transaction history for issuing the book
+    const history = await Transaction.create({
+        userDetail: userId,
+        bookDetail: bookId,
+        status: "issued",
+        dueDate,
+        issueDate: new Date(),
+        returnDate: null  // or use returnDate: undefined
+    });
+
+    if (!history) {
+        throw new ApiError(400, "The transaction was not created");
+    }
+
+    // Update the book status to issued
+    bookDetail.status = status;
+    await bookDetail.save({ timestamps: { createdAt: false, updatedAt: true } });
 
     return res.status(200).json(
         new ApiResponse(200, bookDetail, "Book issued successfully")
     );
 });
 
+
 const returnBook = asyncHandler(async (req, res) => {
-    const { bookId, userId, status } = req.body;
+    const { bookId, status } = req.body;
 
     if (
         [bookId, status].some((field) => field?.trim() === "")
@@ -305,6 +306,7 @@ const returnBook = asyncHandler(async (req, res) => {
 
     // Update the transaction status to returned
     history.status = 'returned';
+    history.returnDate = new Date();
     await history.save();
 
     // Update the book status to available
@@ -399,6 +401,92 @@ const fetchUserTransactions = asyncHandler(async (req, res) => {
     );
 });
 
+const fetchUserNameAndBookName = asyncHandler(async (req, res) => {
+    const { userId, bookId } = req.body;
+
+    if (!userId || !bookId) {
+        throw new ApiError(400, "Data is missing");
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    const book = await Book.findById(bookId);
+    if (!book) {
+        throw new ApiError(404, "Book not found");
+    }
+
+    const userName = user.name;
+    const bookName = book.name;
+
+    return res.status(200).json(
+        new ApiResponse(200, { userName, bookName }, "Successfully fetched")
+    );
+});
+
+const getBookById = asyncHandler(async (req, res) => {
+    const { bookId } = req.body;
+
+    if (!bookId) {
+        throw new ApiError(404, "Id not found");
+    }
+
+    const bookDetails = await Book.findById(bookId);
+
+    if (!bookDetails) {
+        throw new ApiError(400, "no data found!");
+    }
+
+    return res.status(200).json(
+        new ApiResponse(201, { bookDetails }, "successfully fetched!")
+    )
+})
+
+const getTransactionByBook = asyncHandler(async (req, res) => {
+    const { bookId } = req.body;
+
+    if (!bookId) {
+        throw new ApiError(404, "noo book id found");
+    }
+
+    const bookTransaction = await Transaction.findOne({ bookDetail: bookId });
+
+    if (!bookTransaction) {
+        throw new ApiError(404, "noo transaction founded realted to the given book id");
+
+    }
+
+    const userData = await User.findById(bookTransaction.userDetail);
+
+    if (!userData) {
+        throw new ApiError(404, "noo user id found");
+
+    }
+
+    const userName = userData.name;
+
+    const bookData = await Book.findById(bookId);
+
+    if (!bookData) {
+        throw new ApiError(404, "noo book found");
+
+    }
+    const bookName = bookData.name;
+    const bookImg = bookData.bookImg;
+
+    const dueDate = bookTransaction.dueDate;
+    const issueDate = bookTransaction.issueDate;
+
+
+    return res.status(200).json(
+        new ApiResponse(201, { userName, bookName, bookImg, dueDate, issueDate }, "successfully fetched!")
+    )
+
+})
+
+
 export {
     registerAdmin,
     loginAdmin,
@@ -413,5 +501,8 @@ export {
     getAllUsers,
     getAllBooks,
     getAllTransaction,
-    fetchUserTransactions
+    fetchUserTransactions,
+    fetchUserNameAndBookName,
+    getBookById,
+    getTransactionByBook
 };

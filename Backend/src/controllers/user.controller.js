@@ -4,6 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import bcrypt from "bcrypt";
 import { User } from "../models/user.models.js";
 import { Transaction } from "../models/transaction.models.js";
+import { Book } from "../models/books.models.js";
 
 const login = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
@@ -42,6 +43,7 @@ const fetchUserTransaction = asyncHandler(async (req, res) => {
     if (!userDetail) {
         throw new ApiError(400, "No value inserted");
     }
+
     // Fetch all transactions associated with the user
     const transactions = await Transaction.find({ userDetail: userDetail });
 
@@ -49,10 +51,30 @@ const fetchUserTransaction = asyncHandler(async (req, res) => {
         throw new ApiError(404, "No transactions found for this user");
     }
 
-    // Return the transactions in the response
+    const userData = await User.findById(userDetail);
+    if (!userData) {
+        throw new ApiError(400, "No value Founded for user");
+    }
+
+    // Fetch the book data for each transaction
+    const transactionsWithDetails = await Promise.all(transactions.map(async (transaction) => {
+        const bookData = await Book.findById(transaction.bookDetail);
+        if (!bookData) {
+            throw new ApiError(400, "No value Founded for Books");
+        }
+
+        return {
+            ...transaction.toObject(),
+            userName: userData.name,
+            bookName: bookData.name,
+        };
+    }));
+
+    // Return the transactions with user and book details in the response
     return res.status(200).json(
-        new ApiResponse(200, transactions, "Transactions fetched successfully")
+        new ApiResponse(200, transactionsWithDetails, "Transactions fetched successfully")
     );
-})
+});
+
 
 export { login, fetchUserTransaction };

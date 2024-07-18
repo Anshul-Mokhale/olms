@@ -247,6 +247,9 @@ const SignIn: React.FC = () => {
                     </span>
                   </div>
                 </div>
+                <div className="mb-4.5 text-center">
+                  <Link to='/user/signin' className='w-full text-black dark:text-white text-center hover:text-primary'>User SignIn</Link>
+                </div>
 
                 <div className="mb-5">
                   <input
