@@ -82,6 +82,20 @@ The frontend server should now be running on http://localhost:5173.
 
 ## API Endpoints
 
+
+## Frontend Env Data
+
+PORT=8000
+MONGODB_URI=mongodb+srv://anshumokhale:anshul%40123@cluster0.bkpmtvh.mongodb.net/olms?retryWrites=true&w=majority&appName=Cluster0
+CORS_ORIGIN=http://localhost:5173
+ACCESS_TOKEN_SECRET=my-secret-access
+ACCESS_TOKEN_EXPIRY=1d
+REFRESH_TOKEN_SECRET=my-secret-refresh
+REFRESH_TOKEN_EXPIRY=10d
+CLOUDINARY_CLOUD_NAME = dxaw17f4u
+CLOUDINARY_API_KEY=759357581887771
+CLOUDINARY_API_SECRET=1jm-hT-6--li5d-jc32Nebq6gtg
+
 ##Project Structure
 
 olms/
